@@ -31,12 +31,19 @@
 
           if (/^image\/\w+$/.test(file.type)) {
             if (URL) {
-              resolve({
-                loaded: true,
-                name: file.name,
-                type: file.type,
-                url: URL.createObjectURL(file),
-              });
+              // console.log(file);
+
+              const reader = new FileReader;
+              reader.readAsDataURL(file);
+              reader.onload = (e) => {
+                resolve({
+                  loaded: true,
+                  name: file.name,
+                  type: file.type,
+                  data: e.target.result,
+                  url: URL.createObjectURL(file),
+                });
+              }
             } else {
               reject(new Error('Your browser is not supported.'));
             }
@@ -78,17 +85,17 @@
 
 <style scoped>
   .loader {
-    display: table;
-    height: 100%;
-    overflow: hidden;
-    width: 100%;
+    width: 500px;
+    height: 300px;
+    border: 2px solid black;
+    background: #212529;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-    & > p {
-      color: #999;
-      display: table-cell;
-      text-align: center;
-      vertical-align: middle;
-    }
+  .loader > p {
+    color: grey;
   }
 
   .browse {

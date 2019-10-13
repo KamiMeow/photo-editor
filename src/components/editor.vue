@@ -12,12 +12,14 @@
       <button class="toolbar__button" data-action="rotate-right" title="Rotate Right (R)"><span class="fa fa-rotate-right"></span></button>
       <button class="toolbar__button" data-action="flip-horizontal" title="Flip Horizontal (H)"><span class="fa fa-arrows-h"></span></button>
       <button class="toolbar__button" data-action="flip-vertical" title="Flip Vertical (V)"><span class="fa fa-arrows-v"></span></button>
+      <button class="toolbar__button" data-action="upload" title="Save to server"><span class="fa fa-cloud-upload"></span></button>
     </div>
   </div>
 </template>
 
 <script>
   import Cropper from 'cropperjs';
+  import axios from 'axios';
 
   export default {
     props: {
@@ -69,6 +71,10 @@
 
           case 'flip-vertical':
             cropper.scaleY(-cropper.getData().scaleY || -1);
+            break;
+
+          case 'upload':
+            this.uploadToServer()
             break;
 
           default:
@@ -185,6 +191,14 @@
           e.stopPropagation();
           this.crop();
         }
+      },
+
+      uploadToServer() {
+        console.log(this.data);
+        const { data, name } = this.data;
+        axios.post('http://localhost:3000/photos', { data, name }, {
+          withCredential: true,
+        });
       },
 
       start() {
@@ -322,7 +336,7 @@
     left: 50%;
     margin-left: -8rem;
     position: absolute;
-    width: 16rem;
+    width: 18rem;
     z-index: 2015;
   }
 

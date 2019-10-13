@@ -6,7 +6,7 @@
     </header>
     <main class="main">
       <editor v-if="data.loaded" ref="editor" :data="data"></editor>
-      <loader v-else ref="loader" :data="data"></loader>
+      <download v-else ref="download" :data="data"></download>
     </main>
   </div>
 </template>
